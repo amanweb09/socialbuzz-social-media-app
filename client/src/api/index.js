@@ -13,4 +13,7 @@ export const signup = async (data) => { return await instance.post('/api/signup'
 export const login = async (data) => { return await instance.post('/api/login', data) }
 export const getProfile = async () => { return await instance.get('/api/get-profile') }
 
+export const showOnFeed = async () => { return await instance.get('/api/posts/show-on-feed') }
+export const createPost = async (data) => { return await instance.post('/api/posts/create', data) }
+
 export default instance;

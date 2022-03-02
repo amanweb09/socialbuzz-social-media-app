@@ -11,7 +11,12 @@ class PostService {
     }
     async findPosts(filter) {
         try {
-            return await Posts.find(filter) 
+            return await Posts
+                .find(filter)
+                .sort({ createdAt: -1 })
+                .populate('postedBy')
+                .exec()
+                
         } catch (error) {
             console.log(error);
             return error

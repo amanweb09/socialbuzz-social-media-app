@@ -1,6 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const BottomTabs = () => {
+
+    const navigate = useNavigate()
     return (
         <div
             style={{
@@ -17,6 +20,7 @@ const BottomTabs = () => {
                 className='cursor-pointer w-12 mx-6'
                 src='/images/reels.png' alt='reels' />
             <img
+                onClick={() => { navigate('/create-post') }}
                 className='cursor-pointer w-20 mx-6'
                 src='/images/add.png' alt='add' />
             <img

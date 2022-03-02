@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import { getProfile } from './api'
 import { setIsAuth } from './Redux-store/authSlice'
+import CreatePost from './pages/CreatePost'
 
 function App() {
 
@@ -54,6 +55,11 @@ function App() {
         <Route exact path='/' element={
           <AuthRoute>
             <Home />
+          </AuthRoute>
+        } />
+        <Route exact path='/create-post' element={
+          <AuthRoute>
+            <CreatePost />
           </AuthRoute>
         } />
         <Route exact path='/signup' element={<Signup />} />
