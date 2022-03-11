@@ -3,6 +3,7 @@ const router = require('express').Router()
 const commentController = require('../controllers/postControl/commentController');
 const likesController = require('../controllers/postControl/likesController');
 const postsController = require('../controllers/postControl/postsController');
+const userController = require('../controllers/socialController/userController');
 const profileController = require('../controllers/userControl/profileController');
 
 const authenticate = require('../middleware/authenticate')
@@ -14,5 +15,9 @@ router.get('/api/comments/all', authenticate, commentController().showAllComment
 router.get('/api/likes/all', authenticate, likesController().showAllLikes)
 
 router.get('/api/get-profile', authenticate, profileController().getProfile)
+
+router.get('/api/users/:username', authenticate, userController().getUser)
+
+
 
 module.exports = router;

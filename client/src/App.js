@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import { getProfile } from './api'
 import { setIsAuth } from './Redux-store/authSlice'
 import CreatePost from './pages/CreatePost'
+import Account from './pages/Account'
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
       async () => {
         try {
           const { data } = await getProfile()
-          dispatch(setIsAuth({ isAuth: true, user: data.user }))
+          dispatch(setIsAuth({ isAuth: true, user: data }))
 
           setLoading(false)
         } catch (error) {
@@ -60,6 +61,11 @@ function App() {
         <Route exact path='/create-post' element={
           <AuthRoute>
             <CreatePost />
+          </AuthRoute>
+        } />
+        <Route exact path='/account/:username' element={
+          <AuthRoute>
+            <Account />
           </AuthRoute>
         } />
         <Route exact path='/signup' element={<Signup />} />

@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { createPost } from '../api'
 
 const CreatePost = () => {
+
+    const navigate = useNavigate()
 
     const [details, setDetails] = useState({
         picture: "",
@@ -34,6 +37,10 @@ const CreatePost = () => {
                 type: 'success',
                 text: data.message
             })
+
+            setTimeout(() => {
+                navigate('/')
+            }, 1500);
 
         } catch (error) {
             console.log(error);

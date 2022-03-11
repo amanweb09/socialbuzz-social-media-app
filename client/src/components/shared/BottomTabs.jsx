@@ -26,7 +26,7 @@ const BottomTabs = () => {
             <img
                 className='cursor-pointer w-12 mx-6'
                 src='/images/heart.png' alt='notifications' />
-            <div className='cursor-pointer w-12 h-12 rounded-full bg-gray-200'></div>
+            <div onClick={() => navigate('/account')} className='cursor-pointer w-12 h-12 rounded-full bg-gray-200'></div>
 
         </div>
     )

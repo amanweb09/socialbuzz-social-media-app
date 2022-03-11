@@ -16,4 +16,6 @@ export const getProfile = async () => { return await instance.get('/api/get-prof
 export const showOnFeed = async () => { return await instance.get('/api/posts/show-on-feed') }
 export const createPost = async (data) => { return await instance.post('/api/posts/create', data) }
 
+export const accountDetails = async (username) => { return await instance.get(`/api/users/${username}`) }
+
 export default instance;

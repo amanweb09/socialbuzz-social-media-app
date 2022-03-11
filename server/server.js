@@ -10,6 +10,12 @@ const server = require('http').createServer(app);
 const eventEmitter = new Emitter();
 app.set('eventEmitter', eventEmitter)
 
+const io = require('socket.io')(server, {
+    cors: {
+        origin: 'http://127.0.0.1:3000',
+        methods: ['GET', 'POST']
+    }
+})
 
 const cors = require('cors'); 
 app.use(cors({
@@ -33,9 +39,8 @@ server.listen(PORT, () => {
     console.log("Listening server on port", PORT);
 })
 
-const io = require('socket.io')(server)
-
 io.on('connection', (socket) => {
+    
     socket.on('like', ({ userId, postId }) => {
         eventEmitter.emit('post_liked', { userId, postId })
     })

@@ -1,7 +1,19 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router-dom'
+import initSocket from '../../config/webSocket'
 
 const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCount }) => {
+    const { user } = useSelector((state) => state.auth)
+
+    const navigate = useNavigate()
+
+    function likeThePost(details) {
+        const socket = initSocket()
+
+        socket.emit('like', details)
+    }
+
     return (
         <div className="w-2/3 mb-4">
             <div className="flex items-center justify-start py-2">
@@ -10,7 +22,9 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
                         profilePicture && <img src={profilePicture} />
                     }
                 </div>
-                <span className="font-bold ml-2">{username}</span>
+                <span
+                    onClick={() => navigate(`/account/${username}`)}
+                    className="font-bold ml-2 cursor-pointer">{username}</span>
             </div>
 
             <div
@@ -31,7 +45,11 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
             </div>
 
             <div className="flex items-center justify-start mt-2 pb-2">
-                <img className="w-8 mr-4" src="/images/like.png" alt="like" />
+                <img
+                    onClick={() => { likeThePost({ userId: user._id, postId }) }}
+                    className="w-8 mr-4"
+                    src="/images/like.png"
+                    alt="like" />
                 <img className="w-8 mr-4" src="/images/comment.png" alt="comment" />
                 <img className="w-8 mr-4" src="/images/share.png" alt="share" />
             </div>
