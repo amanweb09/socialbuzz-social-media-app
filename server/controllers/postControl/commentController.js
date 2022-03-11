@@ -1,4 +1,5 @@
 const postService = require('../../services/postService')
+const Posts = require('../../models/post')
 
 module.exports = function commentController() {
     return {
@@ -39,19 +40,32 @@ module.exports = function commentController() {
                 .json({ err: "No post found with this ID!" })
         },
         async showAllComments(req, res) {
-            const { postId } = req.query;
+            const { postId } = req.body;
 
-            const posts = await postService.findPosts({ _id: postId })
+            try {
+                const post = await Posts
+                    .findOne({ _id: postId })
+                    .populate('comments.userId')
+                    .exec()
 
-            if (posts[0]) {
+                if (post) {
+                    return res
+                        .status(200)
+                        .json({ comments: post.comments })
+                }
+
                 return res
-                    .status(200)
-                    .json({ comments: posts[0].comments })
+                    .status(404)
+                    .json({ err: "Post not found!" })
+
+            } catch (error) {
+                console.log(error);
+                return res
+                    .status(500)
+                    .json({ err: "Something went wrong!" })
             }
 
-            return res
-                .status(500)
-                .json({ err: "Something went wrong!" })
+
         }
     }
 }

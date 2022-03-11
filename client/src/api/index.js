@@ -17,6 +17,7 @@ export const showOnFeed = async () => { return await instance.get('/api/posts/sh
 export const createPost = async (data) => { return await instance.post('/api/posts/create', data) }
 export const addLike = async (data) => { return await instance.post('/api/like', data) }
 export const postComment = async (data) => { return await instance.post('/api/comment', data) }
+export const showAllComments = async (data) => { return await instance.post('/api/comments/all', data) }
 
 export const getProfile = async () => { return await instance.get('/api/get-profile') }
 export const accountDetails = async (username) => { return await instance.get(`/api/users/${username}`) }

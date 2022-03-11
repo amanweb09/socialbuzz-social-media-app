@@ -11,7 +11,7 @@ const authenticate = require('../middleware/authenticate')
 router.post('/api/posts/create', authenticate, postsController().create)
 router.get('/api/posts/show-on-feed', authenticate, postsController().showOnFeed)
 
-router.get('/api/comments/all', authenticate, commentController().showAllComments)
+router.post('/api/comments/all', authenticate, commentController().showAllComments)
 router.get('/api/likes/all', authenticate, likesController().showAllLikes)
 router.post('/api/like', authenticate, likesController().likePost)
 router.post('/api/comment', authenticate, commentController().postComment)

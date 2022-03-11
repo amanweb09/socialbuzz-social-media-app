@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { addLike } from '../../api'
+import AllComments from './AllComments'
 import Comments from './Comments'
 
 const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCount, likedBy }) => {
@@ -11,6 +12,7 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
     const [isLiked, setIsLiked] = useState(false)
     const [likes, setLikes] = useState(likesCount)
     const [showComments, setShowComments] = useState(false)
+    const [showAllComments, setShowAllComments] = useState(false)
 
     useEffect(() => {
         const isLikedByMe = likedBy.filter((liker) => {
@@ -39,6 +41,9 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
         <div className="w-2/3 mb-4">
             {
                 showComments && <Comments postId={postId} setShowComments={setShowComments} />
+            }
+            {
+                showAllComments && <AllComments postId={postId} setShowAllComments={setShowAllComments} username={username} />
             }
             <div className="flex items-center justify-start py-2">
                 <div className="w-8 h-8 rounded-full bg-gray-200">
@@ -90,9 +95,10 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
                 <img className="w-8 mr-4" src="/images/share.png" alt="share" />
             </div>
 
-            <NavLink
-                className="text-gray-600 font-bold my-2"
-                to="/">Read all comments...</NavLink>
+            <h2
+                onClick={() => setShowAllComments(true)}
+                className="text-gray-600 font-bold my-2 cursor-pointer"
+            >Read all comments...</h2>
         </div>
     )
 }
