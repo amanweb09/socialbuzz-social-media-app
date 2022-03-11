@@ -23,21 +23,21 @@ module.exports = function userController() {
         async followRequest(req, res) {
             const { _id } = req.body
 
-            const follower = await userService.findUser({ _id: req._id })
-            const following = await userService.findUser({ _id })
+            const followedBy = await userService.findUser({ _id: req._id })
+            const userToBeFollowed = await userService.findUser({ _id })
 
-            if (!following) {
+            if (!userToBeFollowed) {
                 return res
                     .status(404)
                     .json({ err: "User not found!" })
             }
 
-            follower.following.unshift(following._id)
-            following.followers.unshift(follower._id)
+            followedBy.following.unshift(userToBeFollowed._id)
+            userToBeFollowed.followers.unshift(followedBy._id)
 
             try {
-                await follower.save()
-                await following.save()
+                await userToBeFollowed.save()
+                await followedBy.save()
 
                 return res
                     .status(200)
@@ -49,6 +49,44 @@ module.exports = function userController() {
 
             }
 
+        },
+        async unfollow(req, res) {
+            const { _id } = req.body
+
+            const unfollowedBy = await userService.findUser({ _id: req._id })
+            const userToBeUnfollowed = await userService.findUser({ _id })
+
+            if (!userToBeUnfollowed) {
+                return res
+                    .status(404)
+                    .json({ err: "User not found!" })
+            }
+
+            const newFollowing = unfollowedBy.following.filter((following) => {
+                return following._id.toString() !== userToBeUnfollowed._id.toString()
+            })
+
+            const newFollowers = userToBeUnfollowed.followers.filter((follower) => {
+                return follower._id.toString() !== unfollowedBy._id.toString()
+            })
+
+
+            unfollowedBy.following = newFollowing
+            userToBeUnfollowed.followers = newFollowers
+
+            try {
+                await userToBeUnfollowed.save()
+                await unfollowedBy.save()
+
+                return res
+                    .status(200)
+                    .json({ message: "follower added" })
+            } catch (error) {
+                return res
+                    .status(500)
+                    .json({ message: "Server Error!" })
+
+            }
 
         }
     }

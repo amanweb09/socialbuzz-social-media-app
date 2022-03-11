@@ -14,6 +14,13 @@ const authenticate = async (req, res, next) => {
 
     if (payload) {
         const authUser = await userService.findUser({ _id: payload._id });
+
+        if (!authUser) {
+            return res
+                .status(404)
+                .json({ err: "No user found!" })
+        }
+        
         req._id = authUser._id;
         req.name = authUser.name;
         req.email = authUser.email;

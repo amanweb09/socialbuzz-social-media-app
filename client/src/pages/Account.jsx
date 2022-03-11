@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AccountPost from '../components/posts/AccountPost'
 import { useParams } from 'react-router-dom'
-import { accountDetails, followUser } from '../api'
+import { accountDetails, followUser, unfollowUser } from '../api'
 import { useSelector } from 'react-redux'
 
 const Account = () => {
@@ -24,10 +24,12 @@ const Account = () => {
                 setLoading(false)
 
                 const userId = data.user.followers.filter((follower) => {
-                    return follower.id === user._id
+                    return follower._id === user._id
                 })
 
-                if (userId) setIsFollowed(true)
+                console.log('ourId: ', user._id, 'followers', data.user.followers);
+
+                if (userId.length) return setIsFollowed(true) 
 
             } catch (error) {
                 console.log(error);
@@ -40,12 +42,22 @@ const Account = () => {
 
     async function sendFollowRequest() {
         try {
-            const { data } = await followUser({ _id: profile._id })
+            await followUser({ _id: profile._id })
             setIsFollowed(true)
 
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async function unfollow() {
+        try {
+            await unfollowUser({ _id: profile._id })
+            setIsFollowed(false)
+
+        } catch (error) {
+            console.log(error);
+        }  
     }
 
     {
@@ -85,6 +97,7 @@ const Account = () => {
                         </button>
                         :
                         <button
+                            onClick={unfollow}
                             className='w-48 h-10 bg-red-500 hover:bg-red-600 font-bold text-white'>
                             Unfollow
                         </button>
