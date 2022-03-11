@@ -30,6 +30,7 @@ const Home = () => {
                             username={post.postedBy.username}
                             profilePicture={post.postedBy.profilePicture ? post.postedBy.profilePicture : null}
                             postImg={post.picture}
+                            likedBy={post.likedBy}
                             likesCount={post.likedBy.length}
                             caption={post.caption ? post.caption : null}
                         />

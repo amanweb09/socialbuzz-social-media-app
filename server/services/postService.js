@@ -22,6 +22,16 @@ class PostService {
             return error
         }
     }
+    async findPost(filter) {
+        try {
+            return await Posts
+                .findOne(filter)
+                
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
 }
 
 module.exports = new PostService()

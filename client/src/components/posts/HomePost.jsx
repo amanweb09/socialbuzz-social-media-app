@@ -1,17 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
-import initSocket from '../../config/webSocket'
+import { addLike } from '../../api'
 
-const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCount }) => {
+const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCount, likedBy }) => {
     const { user } = useSelector((state) => state.auth)
 
     const navigate = useNavigate()
+    const [isLiked, setIsLiked] = useState(false)
+    const [likes, setLikes] = useState(likesCount)
 
-    function likeThePost(details) {
-        const socket = initSocket()
+    useEffect(() => {
+        const isLikedByMe = likedBy.filter((liker) => {
+            return liker === user._id
+        })
 
-        socket.emit('like', details)
+        if (isLikedByMe.length) {
+            setIsLiked(true)
+            return
+        }
+    }, [])
+
+    async function likeThePost() {
+        try {
+            await addLike({ postId })
+            setIsLiked(true)
+            setLikes(likes + 1)
+            setIsLiked(true)
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -41,15 +60,23 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
             }
 
             <div className="font-bold mt-2">
-                Liked by {likesCount} people
+                Liked by {likes} people
             </div>
 
             <div className="flex items-center justify-start mt-2 pb-2">
-                <img
-                    onClick={() => { likeThePost({ userId: user._id, postId }) }}
-                    className="w-8 mr-4"
-                    src="/images/like.png"
-                    alt="like" />
+                {
+                    !isLiked ?
+                        <img
+                            onClick={likeThePost}
+                            className="w-8 mr-4 cursor-pointer"
+                            src="/images/like.png"
+                            alt="like" />
+                        :
+                        <img
+                            className="w-8 mr-4 cursor-pointer"
+                            src="/images/heart.png"
+                            alt="like" />
+                }
                 <img className="w-8 mr-4" src="/images/comment.png" alt="comment" />
                 <img className="w-8 mr-4" src="/images/share.png" alt="share" />
             </div>

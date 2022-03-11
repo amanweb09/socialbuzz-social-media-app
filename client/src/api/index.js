@@ -15,6 +15,7 @@ export const logout = async () => { return await instance.get('/api/logout') }
 
 export const showOnFeed = async () => { return await instance.get('/api/posts/show-on-feed') }
 export const createPost = async (data) => { return await instance.post('/api/posts/create', data) }
+export const addLike = async (data) => { return await instance.post('/api/like', data) }
 
 export const getProfile = async () => { return await instance.get('/api/get-profile') }
 export const accountDetails = async (username) => { return await instance.get(`/api/users/${username}`) }
