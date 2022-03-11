@@ -18,4 +18,7 @@ export const createPost = async (data) => { return await instance.post('/api/pos
 
 export const accountDetails = async (username) => { return await instance.get(`/api/users/${username}`) }
 
+export const followUser = async (data) => { return await instance.post(`/api/follow-request`, data) }
+
+
 export default instance;

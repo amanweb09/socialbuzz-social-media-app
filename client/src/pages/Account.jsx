@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import AccountPost from '../components/posts/AccountPost'
 import { useParams } from 'react-router-dom'
-import { accountDetails } from '../api'
+import { accountDetails, followUser } from '../api'
+import { useSelector } from 'react-redux'
 
 const Account = () => {
+
+    const { user } = useSelector((state) => state.auth)
 
     const { username } = useParams()
     const [profile, setProfile] = useState({})
     const [loading, setLoading] = useState(true)
     const [posts, setPosts] = useState([])
+    const [isFollowed, setIsFollowed] = useState(false)
 
     useEffect(() => {
-        (async () => {
+        const getAccDetails = async () => {
             try {
                 const { data } = await accountDetails(username)
-                console.log(data);
                 setProfile(data.user)
+
                 setPosts(data.posts)
                 setLoading(false)
+
+                const userId = data.user.followers.filter((follower) => {
+                    return follower.id === user._id
+                })
+
+                if (userId) setIsFollowed(true)
+
             } catch (error) {
                 console.log(error);
                 setLoading(false)
             }
-        })()
+        }
+
+        getAccDetails()
     }, [])
+
+    async function sendFollowRequest() {
+        try {
+            const { data } = await followUser({ _id: profile._id })
+            setIsFollowed(true)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     {
         if (loading) return <div className="h-screen w-screen font-bold flex-center">Loading...</div>
@@ -50,14 +73,30 @@ const Account = () => {
                         <h6 className='font-semibold'>Following</h6>
                     </div>
                 </div>
-
             </div>
+
+            <div className="block mx-auto w-max my-4">
+                {
+                    !isFollowed ?
+                        <button
+                            onClick={sendFollowRequest}
+                            className='w-48 h-10 bg-yellow-500 hover:bg-yellow-600 font-bold'>
+                            Follow
+                        </button>
+                        :
+                        <button
+                            className='w-48 h-10 bg-red-500 hover:bg-red-600 font-bold text-white'>
+                            Unfollow
+                        </button>
+                }
+            </div>
+
             <div className='grid grid-cols-4 mb-4 mt-10'>
                 {
                     posts.length && posts.map((post) => {
-                        return <AccountPost 
-                        key={post._id} 
-                        picture={post.picture} /> 
+                        return <AccountPost
+                            key={post._id}
+                            picture={post.picture} />
                     })
                 }
 

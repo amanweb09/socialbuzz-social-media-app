@@ -18,6 +18,7 @@ router.get('/api/get-profile', authenticate, profileController().getProfile)
 
 router.get('/api/users/:username', authenticate, userController().getUser)
 
+router.post('/api/follow-request', authenticate, userController().followRequest)
 
 
 module.exports = router;
