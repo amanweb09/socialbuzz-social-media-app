@@ -41,7 +41,10 @@ const Comments = ({ postId, setShowComments }) => {
             style={{ background: 'rgb(0, 0, 0, 0.25)' }}
             className='w-full h-full fixed bottom-0 left-0 flex-center'>
 
-            <div className="bg-white rounded-lg w-96 h-96">
+            <div className="bg-white rounded-lg w-96 h-96 relative">
+                <h1
+                    onClick={() => setShowComments(false)}
+                    className='absolute top-1 right-1 text-3xl cursor-pointer font-bold hover:text-red-500'>&#215;</h1>
                 <h1 className='font-bold text-center my-4'>Add a comment</h1>
 
                 {
