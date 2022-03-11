@@ -15,6 +15,7 @@ router.get('/api/comments/all', authenticate, commentController().showAllComment
 router.get('/api/likes/all', authenticate, likesController().showAllLikes)
 
 router.get('/api/get-profile', authenticate, profileController().getProfile)
+router.get('/api/my-account', authenticate, profileController().getAccountDetails)
 
 router.get('/api/users/:username', authenticate, userController().getUser)
 

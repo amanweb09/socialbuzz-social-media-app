@@ -14,9 +14,12 @@ const BottomTabs = () => {
             className='mx-auto w-full bg-white sticky bottom-0 left-0 flex items-center justify-evenly'>
 
             <img
+                onClick={() => navigate('/')}
                 className='cursor-pointer w-12 mx-6'
-                src='/images/home.png' alt='home' />
+                src='/images/home.png'
+                alt='home' />
             <img
+                onClick={() => navigate('/reels')}
                 className='cursor-pointer w-12 mx-6'
                 src='/images/reels.png' alt='reels' />
             <img
@@ -24,9 +27,12 @@ const BottomTabs = () => {
                 className='cursor-pointer w-20 mx-6'
                 src='/images/add.png' alt='add' />
             <img
+                onClick={() => navigate('/notifications')}
                 className='cursor-pointer w-12 mx-6'
                 src='/images/heart.png' alt='notifications' />
-            <div onClick={() => navigate('/account')} className='cursor-pointer w-12 h-12 rounded-full bg-gray-200'></div>
+            <div
+                onClick={() => navigate('/profile')}
+                className='cursor-pointer w-12 h-12 rounded-full bg-gray-200'></div>
 
         </div>
     )
