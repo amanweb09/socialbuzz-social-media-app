@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { addLike } from '../../api'
+import Comments from './Comments'
 
 const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCount, likedBy }) => {
     const { user } = useSelector((state) => state.auth)
@@ -9,6 +10,7 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
     const navigate = useNavigate()
     const [isLiked, setIsLiked] = useState(false)
     const [likes, setLikes] = useState(likesCount)
+    const [showComments, setShowComments] = useState(false)
 
     useEffect(() => {
         const isLikedByMe = likedBy.filter((liker) => {
@@ -35,6 +37,9 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
 
     return (
         <div className="w-2/3 mb-4">
+            {
+                showComments && <Comments postId={postId} setShowComments={setShowComments} />
+            }
             <div className="flex items-center justify-start py-2">
                 <div className="w-8 h-8 rounded-full bg-gray-200">
                     {
@@ -47,7 +52,7 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
             </div>
 
             <div
-                style={{ filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))' }}
+                style={{ filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.45))' }}
                 className='w-96 h-96'>
                 <img
                     className='w-full h-full'
@@ -77,7 +82,11 @@ const HomePost = ({ postId, profilePicture, username, postImg, caption, likesCou
                             src="/images/heart.png"
                             alt="like" />
                 }
-                <img className="w-8 mr-4" src="/images/comment.png" alt="comment" />
+                <img
+                    onClick={() => !showComments ? setShowComments(true) : setShowComments(false)}
+                    className="w-8 mr-4 cursor-pointer"
+                    src="/images/comment.png"
+                    alt="comment" />
                 <img className="w-8 mr-4" src="/images/share.png" alt="share" />
             </div>
 
